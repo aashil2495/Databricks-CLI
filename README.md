@@ -32,6 +32,7 @@ az databricks workspace create \
     --location southcentralus \
     --sku premium
 ```
+Replace `myDatabricksWorkspace` with your desired name.
 
 ### 4. **Create a Storage Account**
 ```bash
@@ -43,6 +44,7 @@ az storage account create \
     --kind StorageV2 \
     --hns true
 ```
+Replace `itmmystorageaccountgen2` with your desired name.
 
 ### 5. **Create a Container in the Storage Account**
 ```bash
@@ -50,9 +52,25 @@ az storage container create \
     --account-name itmmystorageaccountcli \
     --name container
 ```
+Replace `container` with your desired name.
 
 ### 6. **List Containers in the Storage Account**
 ```bash
 az storage container list \
     --account-name itmmystorageaccountcli \
-    --
+    --auth-mode login \
+    --query "[].name" -o table
+```
+
+### 7. **Configure the Databricks PAT Token**
+```bash
+databricks configure --token
+```
+
+### 6. **List Containers in the Storage Account**
+```bash
+az storage container list \
+    --account-name itmmystorageaccountcli \
+    --auth-mode login \
+    --query "[].name" -o table
+```
