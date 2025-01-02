@@ -64,8 +64,3 @@ databricks unity-catalog schemas create --catalog-name main --name silver
 Create schema called "gold" under "main" catalog
 databricks unity-catalog schemas create --catalog-name main --name gold
 
-
-
-
-
-token-dapif7cd44309d6268871b0509744496bd12
