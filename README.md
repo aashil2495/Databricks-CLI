@@ -35,6 +35,7 @@ The setup includes:
 - Job and Cluster Configuration are located under Config Files folder.
    
 ## Steps
+### Note - Below are the same steps mentioned in the Databricks CLI_v2.txt file under CLI script folder.
 
 ### 1. **Login to Azure Portal**
 ```bash
