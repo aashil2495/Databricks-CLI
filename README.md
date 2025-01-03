@@ -29,7 +29,9 @@ The setup includes:
 4. Sufficient permissions in your Azure account to create resources.
 
 ---
-
+## Files
+1. Databricks_CLIV2 contains the code
+2. Noteboo
 ## Steps
 
 ### 1. **Login to Azure Portal**
@@ -205,7 +207,7 @@ You can run this command multiple times to test the pipeline.
 ### 24. **Import Notebook from Notebooks folder to your Databricks Workspace.**
 1. Create a Notebook by selecting (+ New) from sidebar and selecting Notebook.
 2. Click File and select Import...
-3. Import your Notebooks  
+3. Import your Notebooks from Notebooks folder in the repo.  
 
 ### 25. **Create a Databricks Job using UI to get Job Configuration**
 1. Access the Jobs Page  
