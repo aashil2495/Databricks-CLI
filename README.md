@@ -30,9 +30,9 @@ The setup includes:
 
 ---
 ## Files and Folders
-1. Databricks CLI_v2.txt contains the CLI script located under CLI
+1. Databricks CLI_v2.txt contains the CLI script located under CLI Script.
 2. Notebooks contain the SQL code located under Notebooks folder.
-3. Job and Cluster Configuration are located under Config folder.
+3. Job and Cluster Configuration are located under Config Files folder.
    
 ## Steps
 
