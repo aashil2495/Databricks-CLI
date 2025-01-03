@@ -29,9 +29,11 @@ The setup includes:
 4. Sufficient permissions in your Azure account to create resources.
 
 ---
-## Files
-1. Databricks_CLIV2 contains the code
-2. Noteboo
+## Files and Folders
+1. Databricks CLI_v2.txt contains the CLI script located under CLI
+2. Notebooks contain the SQL code located under Notebooks folder.
+3. Job and Cluster Configuration are located under Config folder.
+   
 ## Steps
 
 ### 1. **Login to Azure Portal**
