@@ -25,7 +25,8 @@ The setup includes:
 ## Prerequisites
 1. Azure CLI installed and configured.
 2. Databricks CLI installed.
-3. Sufficient permissions in your Azure account to create resources.
+3. AzCopy installed.
+4. Sufficient permissions in your Azure account to create resources.
 
 ---
 
