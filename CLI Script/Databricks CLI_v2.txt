@@ -99,3 +99,6 @@ databricks jobs create --json-file C:\Users\aashi\projects\Databricks_Job_Config
 
 Run job.Replace the job id.
 databricks jobs run-now --job-id 189025494907676
+
+Create a CLuster
+databricks clusters create --json-file C:\Users\aashi\projects\Databricks_Cluster_Config.json
