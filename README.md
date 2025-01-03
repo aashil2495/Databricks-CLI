@@ -154,40 +154,72 @@ databricks unity-catalog external-locations create --name gold-loc --url abfss:/
 ```
 Replace `abfss://raw@ashilstoragedatastore.dfs.core.windows.net/`, `abfss://bronze@ashilstoragedatastore.dfs.core.windows.net/`, `abfss://silver@ashilstoragedatastore.dfs.core.windows.net/`, `abfss://gold@ashilstoragedatastore.dfs.core.windows.net/`, `common-storage-cred` with your desired values.
 
-### 21. **Create schema called "bronze", "silver: and "gold" under "main" catalog**
+### 21. **Create Unity Catalog Schemas**
+#### Create "bronze" Schema
 ```bash
 databricks unity-catalog schemas create --catalog-name main --name bronze
+```
+
+#### Create "silver" Schema
+```bash
 databricks unity-catalog schemas create --catalog-name main --name silver
+```
+
+#### Create "gold" Schema
+```bash
 databricks unity-catalog schemas create --catalog-name main --name gold
 ```
 
-### 22. **Now we will login with azcopy**
+### 22. **Login with azcopy**
 ```bash
 azcopy login
 ```
 Follow the on-screen instructions and login to Azure. Open the URL shown on the screen in a browser and paste the code in the prompt to login.
 
-### 20. **Create Unity Catalog Schemas**
-#### Create "bronze" Schema
+### 23. **Copy single file from local path to raw container on storage**
 ```bash
-databricks unity-catalog schemas create \
-    --catalog-name main \
-    --name bronze
+azcopy copy "C:\Users\aashi\projects\synthea\synthea\output\csv\2024_12_21T17_44_38Z\patients.csv" "https://ashilstoragedatastore.blob.core.windows.net/raw/patients.csv"
 ```
+Replace `C:\Users\aashi\projects\synthea\synthea\output\csv\2024_12_21T17_44_38Z\patients.csv` and `https://ashilstoragedatastore.blob.core.windows.net/raw/patients.csv` with your desired paths.
+You can run this command multiple times to test the pipeline.
 
-#### Create "silver" Schema
-```bash
-databricks unity-catalog schemas create \
-    --catalog-name main \
-    --name silver
-```
+### 24. **Create a Databricks Job using UI to get Job Configuration**
+1. Access the Jobs Page  
+    1.1. Log in to your Databricks workspace.  
+    1.2. In the left sidebar, click on **Workflows** (or **Jobs**, depending on your workspace version).  
 
-#### Create "gold" Schema
+2. Create a New Job  
+    2.1. Click the **Create Job** button.  
+    2.2. Fill in the required fields:  
+        2.2.1. **Job Name:** Provide a name for the job.  
+        2.2.2. **Task Configuration:**  
+            - **Task Name:** Name your task.  
+            - **Type:** Choose the task type (e.g., Notebook, JAR, Python Script).  
+            - **Cluster:** Choose an existing cluster or create a new one by selecting **New Cluster** and configuring its settings.  
+            - **Notebook Path:** If using a notebook, provide its path.  
+        2.2.3. **Advanced Settings (Optional):** Configure dependencies, email notifications, and retry policies.  
+    2.3. Save the job by clicking **Save task**.  
+    2.4. Click on the kebab (3 dots) icon on the top-right corner next to **Run now**.  
+    2.5. Select **View JSON** option, click on the **Create** tab, and copy the configuration.  
+    2.6. Save the configuration to a file in JSON format.
+   
+### 25. **Create a Databricks Job**
 ```bash
-databricks unity-catalog schemas create \
-    --catalog-name main \
-    --name gold
+databricks jobs create --json-file C:\Users\aashi\projects\Databricks_Job_Config.json
 ```
+Replace `C:\Users\aashi\projects\Databricks_Job_Config.json` with your desired path.
+
+### 26. **Run the Databricks Job**
+```bash
+databricks jobs run-now --job-id 189025494907676
+```
+Replace `189025494907676` with your job id.
+
+### 27. **Run the Databricks Job**
+```bash
+databricks clusters create --json-file C:\Users\aashi\projects\Databricks_Cluster_Config.json
+```
+Replace `C:\Users\aashi\projects\Databricks_Cluster_Config.json` with your desired path`
 
 ---
 
