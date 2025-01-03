@@ -202,7 +202,12 @@ azcopy copy "C:\Users\aashi\projects\synthea\synthea\output\csv\2024_12_21T17_44
 Replace `C:\Users\aashi\projects\synthea\synthea\output\csv\2024_12_21T17_44_38Z\patients.csv` and `https://ashilstoragedatastore.blob.core.windows.net/raw/patients.csv` with your desired paths.
 You can run this command multiple times to test the pipeline.
 
-### 24. **Create a Databricks Job using UI to get Job Configuration**
+### 24. **Import Notebook from Notebooks folder to your Databricks Workspace.**
+1. Create a Notebook by selecting (+ New) from sidebar and selecting Notebook.
+2. Click File and select Import...
+3. Import your Notebooks  
+
+### 25. **Create a Databricks Job using UI to get Job Configuration**
 1. Access the Jobs Page  
     1.1. Log in to your Databricks workspace.  
     1.2. In the left sidebar, click on **Workflows** (or **Jobs**, depending on your workspace version).  
@@ -222,19 +227,19 @@ You can run this command multiple times to test the pipeline.
     2.5. Select **View JSON** option, click on the **Create** tab, and copy the configuration.  
     2.6. Save the configuration to a file in JSON format.
    
-### 25. **Create a Databricks Job**
+### 26. **Create a Databricks Job**
 ```bash
 databricks jobs create --json-file C:\Users\aashi\projects\Databricks_Job_Config.json
 ```
 Replace `C:\Users\aashi\projects\Databricks_Job_Config.json` with your desired path.
 
-### 26. **Run the Databricks Job**
+### 27. **Run the Databricks Job**
 ```bash
 databricks jobs run-now --job-id 189025494907676
 ```
 Replace `189025494907676` with your job id.
 
-### 27. **Create Databricks Cluster using UI to get Cluster Configuration**
+### 28. **Create Databricks Cluster using UI to get Cluster Configuration**
 - **Access the Compute Page**
   - Log in to your Databricks workspace.
   - In the left sidebar, click on **Compute**.
@@ -272,7 +277,7 @@ Replace `189025494907676` with your job id.
   - To edit a cluster, click on the cluster name and modify the configuration.
   - To terminate a cluster, click the **Terminate** button on the cluster details page.
 
-### 28. **Create Databricks Cluster**
+### 29. **Create Databricks Cluster**
 ```bash
 databricks clusters create --json-file C:\Users\aashi\projects\Databricks_Cluster_Config.json
 ```
