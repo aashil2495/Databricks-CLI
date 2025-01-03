@@ -20,47 +20,51 @@ az login
 
 ### 2. **Create a Resource Group**
 ```bash
-az group create --name myResourceGroup --location southcentralus
+az group create --name ashil-resourcegroup --location southcentralus
 ```
-Replace `myResourceGroup` with your desired name.
+Replace `ashil-resourcegroup` with your desired name.
 
 ### 3. **Create a Databricks Workspace**
 ```bash
-az databricks workspace create \
-    --resource-group myResourceGroup \
-    --name myDatabricksWorkspace \
-    --location southcentralus \
-    --sku premium
+az databricks workspace create --resource-group ashil-resourcegroup --name ashilDatabricksWorkspace --location southcentralus --sku premium
 ```
-Replace `myDatabricksWorkspace` with your desired name.
+Replace `ashilDatabricksWorkspace` with your desired name.
 
 ### 4. **Create a Storage Account**
 ```bash
-az storage account create \
-    --name itmmystorageaccountgen2 \
-    --resource-group myResourceGroup \
-    --location southcentralus \
-    --sku Standard_LRS \
-    --kind StorageV2 \
-    --hns true
+az storage account create --name ashilstorage --resource-group ashil-resourcegroup --location southcentralus --sku Standard_LRS --kind StorageV2 --hns true
 ```
-Replace `itmmystorageaccountgen2` with your desired name.
+Replace `ashilstorage` with your desired name.
 
 ### 5. **Create a Container in the Storage Account**
 ```bash
-az storage container create \
-    --account-name itmmystorageaccountcli \
-    --name container
+az storage container create -n metastore-container --account-name ashilstorage --auth-mode login
 ```
-Replace `container` with your desired name.
+Replace `metastore-container` with your desired name.
 
-### 6. **List Containers in the Storage Account**
+### 6. **Create a Storage Account**
+```bash
+az storage account create --name ashilstoragedatastore --resource-group ashil-resourcegroup --location southcentralus --sku Standard_LRS --kind StorageV2 --hns true
+```
+Replace `ashilstoragedatastore` with your desired name.
+
+### 7. **Create a Raw, Bronze, Silver and Gold Container in the Storage Account**
+```bash
+az storage container create -n raw --account-name ashilstoragedatastore --auth-mode login
+az storage container create -n bronze --account-name ashilstoragedatastore --auth-mode login
+az storage container create -n silver --account-name ashilstoragedatastore --auth-mode login
+az storage container create -n gold --account-name ashilstoragedatastore --auth-mode login
+```
+Replace `ashilstoragedatastore` with your desired name.
+
+### 8. **List Containers in the Storage Account**
 ```bash
 az storage container list \
-    --account-name itmmystorageaccountcli \
+    --account-name ashilstoragedatastore \
     --auth-mode login \
     --query "[].name" -o table
 ```
+Replace `ashilstoragedatastore` with your desired name.
 
 ### 7. **Configure the Databricks PAT Token**
 ```bash
