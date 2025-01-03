@@ -1,6 +1,24 @@
 # Azure Databricks Setup
 
-This README provides step-by-step instructions to set up resources in Azure and configure Databricks for managing data workflows. The setup includes creating a resource group, Databricks workspace, storage accounts, Unity Catalog, and schemas.
+This README provides step-by-step instructions to set up resources in Azure and configure Databricks for managing data workflows.
+The setup includes:
+- Resource Group
+- Databricks Workspace
+- Storage Accounts
+- Containers
+- Databricks PAT Token
+- Metastore
+- Access Connector
+- Attaching Metastore to Worksapce
+- Adding role to Access Connector
+- External Storage Credential
+- External Storage Location
+- Catalog
+- Schemas
+- Copying files using azcopy
+- Create Databricks Job
+- Running the Job
+- Creating Databricks Cluster
 
 ---
 
@@ -215,7 +233,7 @@ databricks jobs run-now --job-id 189025494907676
 ```
 Replace `189025494907676` with your job id.
 
-### 27. **Run the Databricks Job**
+### 27. **Create Databricks Cluster**
 ```bash
 databricks clusters create --json-file C:\Users\aashi\projects\Databricks_Cluster_Config.json
 ```
