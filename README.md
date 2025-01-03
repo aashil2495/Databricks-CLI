@@ -115,6 +115,7 @@ Important: Copy the token immediately. You will not be able to view it again aft
 ```bash
 databricks configure --token
 ```
+After running the above step, go to C:\Users\your-username\.databrickscfg file and check the token values. Replace 'your-username' in filepath to your username.
 
 ### 11. **Create unity catalog metastore in Databricks account**
 ```bash
