@@ -23,16 +23,16 @@ The setup includes:
 ---
 
 ## Prerequisites
-1. Azure CLI installed and configured.
-2. Databricks CLI installed.
-3. AzCopy installed.
-4. Sufficient permissions in your Azure account to create resources.
+- Azure CLI installed and configured.
+- Databricks CLI installed.
+- AzCopy installed.
+- Sufficient permissions in your Azure account to create resources.
 
 ---
 ## Files and Folders
-1. Databricks CLI_v2.txt contains the CLI script located under CLI Script.
-2. Notebooks contain the SQL code located under Notebooks folder.
-3. Job and Cluster Configuration are located under Config Files folder.
+- Databricks CLI_v2.txt contains the CLI script located under CLI Script.
+- Notebooks contain the SQL code located under Notebooks folder.
+- Job and Cluster Configuration are located under Config Files folder.
    
 ## Steps
 
