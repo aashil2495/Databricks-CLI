@@ -66,97 +66,106 @@ az storage container list \
 ```
 Replace `ashilstoragedatastore` with your desired name.
 
-### 7. **Configure the Databricks PAT Token**
+### 9. **Create the Databricks PAT Token**
+1. Log in to Your Databricks Workspace
+Open your Databricks workspace in a browser.
+The URL typically looks like: https://<your-databricks-instance>.cloud.databricks.com.
+
+2. Navigate to User Settings
+In the top-right corner, click your profile icon.
+Select User Settings from the dropdown menu.
+
+3. Go to the Access Tokens Tab
+In the User Settings page, click on the Access Tokens tab.
+Click on the Generate New Token button.
+
+4. Configure the Token
+Comment (Optional): Provide a description or label for the token to identify its purpose.
+Lifetime (Optional): Set an expiration time for the token, or leave it blank for the default (which varies by workspace).
+
+5. Generate the Token
+Click the Generate button.
+A new token will be displayed.
+Important: Copy the token immediately. You will not be able to view it again after this step.
+
+### 10. **Configure the Databricks PAT Token**
 ```bash
 databricks configure --token
 ```
 
-### 8. **Create unity catalog metastore in Databricks account**
+### 11. **Create unity catalog metastore in Databricks account**
 ```bash
-databricks unity-catalog metastores create \
-   --name metastoresouthcentralus \
-   --storage-root abfss://container@itmmystorageaccountcli.dfs.core.windows.net/ \
-   --region southcentralus
+databricks unity-catalog metastores create --name southcentralus --storage-root abfss://metastore-container@ashilstorage.dfs.core.windows.net/ --region southcentralus
 ```
+Replace the `southcentralus`,`metastore-container` and `ashilstorage` with your desired name.
 
-### 9. **Assign metastore to workspace**
+### 12. **Assign metastore to workspace**
 ```bash
-databricks unity-catalog metastores assign \
-   --workspace-id 2802728894264871 \
-   --metastore-id a6c116d8-6ec1-460a-98d1-6f0f62e25695 \
-   --default-catalog-name main
+databricks unity-catalog metastores assign --workspace-id 2744189980357297 --metastore-id d590c7f3-5713-43f6-886e-019e9cce2aca --default-catalog-name main
 ```
+Replace the `2744189980357297`, `d590c7f3-5713-43f6-886e-019e9cce2aca` and `main` with your values.
 
-### 10. **Create Databricks Access Connector**
+### 13. **Create Databricks Access Connector**
 ```bash
-az databricks access-connector create \
-    --resource-group myResourceGroup \
-    --name my-access-connector \
-    --location southcentralus \
-    --identity-type SystemAssigned
+az databricks access-connector create --resource-group ashil-resourcegroup --name ashil-access-connector --location southcentralus --identity-type SystemAssigned
 ```
+Replace `ashil-resourcegroup`, `ashil-access-connector` with your desired names.
 
-### 11. **List Databricks Access Connector**
+### 14. **List Databricks Access Connector**
 ```bash
-az databricks access-connector show \
-    --resource-group myResourceGroup \
-    --name my-access-connector \
-    --query "identity.principalId" -o tsv
+az databricks access-connector show --resource-group ashil-resourcegroup --name ashil-access-connector --query "identity.principalId" -o tsv
 ```
+Replace `ashil-resourcegroup`, `ashil-access-connector` with your desired names.
 
-### 12. **List Azure Subscriptions**
+### 15. **List Azure Subscriptions**
 ```bash
 az account list --output table
 ```
 
-### 13. **List Storage Accounts**
+### 16. **List Storage Accounts**
 ```bash
 az storage account list --output table
 ```
 
-### 14. **Assign Role to Managed Identity (Access Connector)**
+### 17. **Assign Role to Managed Identity (Access Connector)**
 ```bash
-az role assignment create \
-    --assignee ea0bb2f9-762f-496c-a5ce-8d33f4dd1790 \
-    --role "Storage Blob Data Contributor" \
-    --scope "/subscriptions/d066615d-e286-4bf1-92e7-7df087f1f4d0/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/itmmystorageaccountcli"
+az role assignment create --assignee 82eb651a-a93c-4bb9-970b-c61f48d6e346 --role "Storage Blob Data Contributor" --scope "/subscriptions/d066615d-e286-4bf1-92e7-7df087f1f4d0/resourceGroups/ashil-resourcegroup/providers/Microsoft.Storage/storageAccounts/ashilstorage"
+az role assignment create --assignee 82eb651a-a93c-4bb9-970b-c61f48d6e346 --role "Storage Blob Data Contributor" --scope "/subscriptions/d066615d-e286-4bf1-92e7-7df087f1f4d0/resourceGroups/ashil-resourcegroup/providers/Microsoft.Storage/storageAccounts/ashilstoragedatastore"
+```
+Replace `82eb651a-a93c-4bb9-970b-c61f48d6e346`, `/subscriptions/d066615d-e286-4bf1-92e7-7df087f1f4d0/resourceGroups/ashil-resourcegroup/providers/Microsoft.Storage/storageAccounts/ashilstorage`,  `/subscriptions/d066615d-e286-4bf1-92e7-7df087f1f4d0/resourceGroups/ashil-resourcegroup/providers/Microsoft.Storage/storageAccounts/ashilstorage` with your desored values.
+
+### 18. **List Access Connectors**
+```bash
+az databricks access-connector list --output table
 ```
 
-### 15. **List Access Connectors**
+### 19. **Create Storage Credentials**
 ```bash
-az databricks access-connector list --output json
+databricks unity-catalog storage-credentials create --name common-storage-cred --az-mi-access-connector-id "/subscriptions/d066615d-e286-4bf1-92e7-7df087f1f4d0/resourceGroups/ashil-resourcegroup/providers/Microsoft.Databricks/accessConnectors/ashil-access-connector"
+```
+Replace `common-storage-cred`, `/subscriptions/d066615d-e286-4bf1-92e7-7df087f1f4d0/resourceGroups/ashil-resourcegroup/providers/Microsoft.Databricks/accessConnectors/ashil-access-connector` with your desired values.
+
+### 20. **Create Raw, Bronze, Silver and Gold External Location**
+```bash
+databricks unity-catalog external-locations create --name raw-loc --url abfss://raw@ashilstoragedatastore.dfs.core.windows.net/ --storage-credential-name common-storage-cred
+databricks unity-catalog external-locations create --name bronze-loc --url abfss://bronze@ashilstoragedatastore.dfs.core.windows.net/ --storage-credential-name common-storage-cred
+databricks unity-catalog external-locations create --name silver-loc --url abfss://silver@ashilstoragedatastore.dfs.core.windows.net/ --storage-credential-name common-storage-cred
+databricks unity-catalog external-locations create --name gold-loc --url abfss://gold@ashilstoragedatastore.dfs.core.windows.net/ --storage-credential-name common-storage-cred
+```
+Replace `abfss://raw@ashilstoragedatastore.dfs.core.windows.net/`, `abfss://bronze@ashilstoragedatastore.dfs.core.windows.net/`, `abfss://silver@ashilstoragedatastore.dfs.core.windows.net/`, `abfss://gold@ashilstoragedatastore.dfs.core.windows.net/`, `common-storage-cred` with your desired values.
+
+### 21. **Create schema called "bronze", "silver: and "gold" under "main" catalog**
+```bash
+databricks unity-catalog schemas create --catalog-name main --name bronze
+databricks unity-catalog schemas create --catalog-name main --name silver
+databricks unity-catalog schemas create --catalog-name main --name gold
 ```
 
-### 16. **Create Storage Credentials**
+### 22. **Now we will login with azcopy**
 ```bash
-databricks unity-catalog storage-credentials create \
-    --name external-loc \
-    --az-mi-access-connector-id "/subscriptions/d066615d-e286-4bf1-92e7-7df087f1f4d0/resourceGroups/myResourceGroup/providers/Microsoft.Databricks/accessConnectors/my-access-connector"
+azcopy login
 ```
-
-### 17. **Create External Location**
-```bash
-databricks unity-catalog external-locations create \
-    --name my_external_location \
-    --url abfss://container@itmmystorageaccountcli.dfs.core.windows.net/ \
-    --storage-credential-name external-loc
-```
-
-### 18. **Assign Role to Managed Identity on Another Storage Account**
-```bash
-az role assignment create \
-    --assignee ea0bb2f9-762f-496c-a5ce-8d33f4dd1790 \
-    --role "Storage Blob Data Contributor" \
-    --scope "/subscriptions/d066615d-e286-4bf1-92e7-7df087f1f4d0/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/itmdatastore"
-```
-
-### 19. **Create External Location for Another Storage Account**
-```bash
-databricks unity-catalog external-locations create \
-    --name itmdatastore-bronze \
-    --url abfss://bronze@itmdatastore.dfs.core.windows.net/ \
-    --storage-credential-name external-loc
-```
+Follow the on-screen instructions and login to Azure. Open the URL shown on the screen in a browser and paste the code in the prompt to login.
 
 ### 20. **Create Unity Catalog Schemas**
 #### Create "bronze" Schema
