@@ -233,7 +233,45 @@ databricks jobs run-now --job-id 189025494907676
 ```
 Replace `189025494907676` with your job id.
 
-### 27. **Create Databricks Cluster**
+### 27. **Create Databricks Cluster using UI to get Cluster Configuration**
+- **Access the Compute Page**
+  - Log in to your Databricks workspace.
+  - In the left sidebar, click on **Compute**.
+
+- **Create a New Cluster**
+  - Click the **Create Compute** button.
+  - Fill in the required fields:
+    - **Cluster Name:** Provide a unique name for the cluster.
+    - **Cluster Policy:** Provide a unique name for the cluster.
+    - **Cluster Mode:** Select either:
+      - **Multi Node:** For a single machine cluster.
+      - **Single Node:** For shared workloads.
+    - **Access Mode:** Select either:
+    - **Databricks Runtime Version:** Choose the appropriate runtime version based on your workload requirements (e.g., Scala, Spark, ML).
+    - **Worker Configuration:**
+      - **Worker Type:** Select the instance type (e.g., Standard_DS3_v2).
+      - **Workers:** Specify the number of worker nodes for the cluster.
+      - **Driver Type:** Select the instance type for the driver node.
+    - **Advanced Options (Optional):**
+      - Set Spark configurations, environment variables, or custom logging.
+      - Configure autoscaling and termination policies.
+
+- **Save and Start the Cluster**
+  - Click **Create Compute** to save your configuration and start the cluster.
+  - The cluster will appear in the **Compute** page with its current status (e.g., starting, running, terminated).
+
+- **Copy the JSON Configuration of the Created Cluster**
+  - Navigate to the **Compute** page.
+  - Locate your created cluster and click on its name to open the cluster details.
+  - Click on the **Advanced Options** tab or look for the **JSON** section (depending on your Databricks version).
+  - Click on the **Edit** or **View JSON** option (a pencil or JSON icon is typically available), select **Create**
+  - Copy the JSON configuration of the cluster and save it to a file in JSON format for reference or reuse.
+
+- **Optional: Edit or Terminate the Cluster**
+  - To edit a cluster, click on the cluster name and modify the configuration.
+  - To terminate a cluster, click the **Terminate** button on the cluster details page.
+
+### 28. **Create Databricks Cluster**
 ```bash
 databricks clusters create --json-file C:\Users\aashi\projects\Databricks_Cluster_Config.json
 ```
