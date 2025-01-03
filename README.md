@@ -82,10 +82,7 @@ Replace `ashilstoragedatastore` with your desired name.
 
 ### 8. **List Containers in the Storage Account**
 ```bash
-az storage container list \
-    --account-name ashilstoragedatastore \
-    --auth-mode login \
-    --query "[].name" -o table
+az storage container list --account-name ashilstoragedatastore --auth-mode login --query "[].name" -o table
 ```
 Replace `ashilstoragedatastore` with your desired name.
 
