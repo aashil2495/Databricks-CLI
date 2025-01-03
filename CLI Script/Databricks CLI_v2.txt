@@ -16,16 +16,16 @@ az storage container create -n metastore-container --account-name ashilstorage -
 Create Storage account named "ashilstoragedatastore"
 az storage account create --name ashilstoragedatastore --resource-group ashil-resourcegroup --location southcentralus --sku Standard_LRS --kind StorageV2 --hns true
 
-Create Container named "ashilstoragedatastore" in storage account
+Create Container named "raw" in storage account
 az storage container create -n raw --account-name ashilstoragedatastore --auth-mode login
 
-Create Container named "ashilstoragedatastore" in storage account
+Create Container named "bronze" in storage account
 az storage container create -n bronze --account-name ashilstoragedatastore --auth-mode login
 
-Create Container named "ashilstoragedatastore" in storage account
+Create Container named "silver" in storage account
 az storage container create -n silver --account-name ashilstoragedatastore --auth-mode login
 
-Create Container named "ashilstoragedatastore" in storage account
+Create Container named "gold" in storage account
 az storage container create -n gold --account-name ashilstoragedatastore --auth-mode login
 ------------------------
 List the containers in storage account.
