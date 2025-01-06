@@ -35,35 +35,40 @@ The setup includes:
 - Job and Cluster Configuration are located under Config Files folder.
    
 ## Steps
-### Note - Below are the same steps mentioned in the Databricks CLI_v2.txt file under CLI script folder.
 
 ### 1. **Login to Azure Portal**
 ```bash
 az login
 ```
 
-### 2. **Create a Resource Group**
-```bash
-az group create --name ashil-resourcegroup --location southcentralus
-```
-Replace `ashil-resourcegroup` with your desired name.
+### 2. **Run the Databricks Deployment script**
+Run the Azure and Databricks CLI file located in scripts folder.
 
-### 3. **Create a Databricks Workspace**
-```bash
-az databricks workspace create --resource-group ashil-resourcegroup --name ashilDatabricksWorkspace --location southcentralus --sku premium
-```
-Replace `ashilDatabricksWorkspace` with your desired name.
+### 3. **Create a Databricks PAT Token**
+1. When you are prompted to enter Databricks Host, log in to Your Databricks Workspace in the browser.
+The URL typically looks like: https://<your-databricks-instance>.cloud.databricks.com.
 
-### 4. **Create a Storage Account**
-```bash
-az storage account create --name ashilstorage --resource-group ashil-resourcegroup --location southcentralus --sku Standard_LRS --kind StorageV2 --hns true
-```
-Replace `ashilstorage` with your desired name.
+2. Navigate to User Settings
+In the top-right corner, click your profile icon.
+Select User Settings from the dropdown menu.
 
-### 5. **Create a Container in the Storage Account**
-```bash
-az storage container create -n metastore-container --account-name ashilstorage --auth-mode login
-```
+3. Go to the Access Tokens Tab
+In the User Settings page, click on the Access Tokens tab.
+Click on the Generate New Token button.
+
+4. Configure the Token
+Comment (Optional): Provide a description or label for the token to identify its purpose.
+Lifetime (Optional): Set an expiration time for the token, or leave it blank for the default (which varies by workspace).
+
+5. Generate the Token
+Click the Generate button.
+A new token will be displayed.
+Important: Copy the token immediately. You will not be able to view it again after this step.
+
+### 4. **Configure the PAT Token**
+Paste your Databricks Host and you will be prompted to enter the token. Paste the token that you copied.
+
+### 5. **Run the Azcopy script**
 Replace `metastore-container` with your desired name.
 
 ### 6. **Create a Storage Account**
