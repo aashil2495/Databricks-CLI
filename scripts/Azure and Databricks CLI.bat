@@ -91,88 +91,74 @@ call az role assignment create --assignee %ACCESS_CONNECTOR_PRINCIPAL_ID% --role
 :: Configure the Databricks PAT Token
 databricks configure --token
 
-:: Get default workspace metastore details
-for /f "tokens=*" %%i in ('databricks unity-catalog metastores get-assignment ^| findstr "metastore_id"') do (
-    set "CURRENT_METASTORE_ID=%%i"
+:: Get the output of the Databricks metastores command and store it in a temporary file
+databricks metastores current > temp_output.json
+
+:: Use findstr to get the line containing "metastore_id", and extract the value
+for /f "tokens=2 delims=:," %%a in ('findstr /i "metastore_id" temp_output.json') do (
+    set CURRENT_METASTORE_ID=%%a
 )
 
-:: Fetch Metastore ID
-for /f "tokens=2 delims=:," %%j in ("%CURRENT_METASTORE_ID%") do (
-    set "CURRENT_METASTORE_ID=%%j"
-)
-
-:: Remove double quotes from the ID
-set CURRENT_METASTORE_ID=%CURRENT_METASTORE_ID:"=%
+:: Remove extra spaces or quotes from the METASTORE_ID
 set CURRENT_METASTORE_ID=%CURRENT_METASTORE_ID: =%
+set CURRENT_METASTORE_ID=%CURRENT_METASTORE_ID:~1,-1%
+
+:: Display the extracted METASTORE_ID
+call echo Metastore ID: %CURRENT_METASTORE_ID%
+
+:: Clean up temporary file
+del temp_output.json
 
 :: Delete catalogs
-call databricks unity-catalog catalogs delete --name system -p
-call databricks unity-catalog catalogs delete --name samples -p
-call databricks unity-catalog catalogs delete --name %DATABRICKS_WORKSPACE_NAME% -p
+call databricks catalogs delete --name system -p
+call databricks catalogs delete --name samples -p
+call databricks catalogs delete --name %DATABRICKS_WORKSPACE_NAME% -p
 
 :: Unassign the metastore
-call databricks unity-catalog metastores unassign --workspace-id %WORKSPACE_ID% --metastore-id %CURRENT_METASTORE_ID%
+call databricks metastores unassign --workspace-id %WORKSPACE_ID% --metastore-id %CURRENT_METASTORE_ID%
 
 :: Delete the default metastore
-call databricks unity-catalog metastores delete --id %CURRENT_METASTORE_ID% --force
+call databricks metastores delete --id %CURRENT_METASTORE_ID% --force
 
 :: Create a new metastore
-call databricks unity-catalog metastores create --name %METASTORE_NAME% --storage-root abfss://%METASTORE_CONTAINER%@%METASTORE_STORAGE_ACCOUNT%.dfs.core.windows.net/ --region %LOCATION%
+call databricks metastores create --name %METASTORE_NAME% --storage-root abfss://%METASTORE_CONTAINER%@%METASTORE_STORAGE_ACCOUNT%.dfs.core.windows.net/ --region %LOCATION%
 
-:: Get Metastore List and store the output in a temporary file
-call databricks unity-catalog metastores list > temp.json
+:: Run the Databricks metastores list command and store the output in a temporary file
+databricks metastores list > temp_output.txt
 
-:: Loop through the file and find the correct metastore name first
-set "found="
-for /f "delims=" %%i in (temp.json) do (
-    set "line=%%i"
-    echo !line! | findstr /i /c:"\"name\": \"!METASTORE_NAME!\"" >nul
-    if not errorlevel 1 (
-        set "found=1"
-    )
-    if defined found (
-        echo !line! | findstr /i /c:"\"metastore_id\": " >nul
-        if not errorlevel 1 (
-            for /f "tokens=2 delims=: " %%j in ("!line!") do (
-                set "METASTORE_ID=%%j"
-            )
-            goto found_metastore_id
-        )
-    )
+:: Initialize the variable to store the ID
+set METASTORE_ID=
+
+:: Loop through each line of the output to find the matching region
+for /f "tokens=1,3" %%a in ('findstr /i "southcentralus" temp_output.txt') do (
+    set METASTORE_ID=%%a
 )
 
-:found_metastore_id
+:: Display the extracted METASTORE_ID
+echo Metastore ID: %METASTORE_ID%
 
-:: Clean up the JSON formatting
-if defined METASTORE_ID (
-    set METASTORE_ID=!METASTORE_ID:~1,-2!
-    echo !METASTORE_ID!
-) else (
-    echo Metastore ID not found.
-)
-
-:: Clean up
-del temp.json
+:: Clean up temporary file
+del temp_output.txt
 
 :: Assign metastore to workspace
-call databricks unity-catalog metastores assign --workspace-id %WORKSPACE_ID% --metastore-id !METASTORE_ID! --default-catalog-name main
+call databricks metastores assign --workspace-id %WORKSPACE_ID% --metastore-id !METASTORE_ID! --default-catalog-name main
 
 :: Create Databricks Storage Credential
-call databricks unity-catalog storage-credentials create --name %DATABRICKS_STORAGE_CREDENTIAL_NAME% --az-mi-access-connector-id "/subscriptions/%SUBSCRIPTION_ID%/resourceGroups/%RESOURCE_GROUP%/providers/Microsoft.Databricks/accessConnectors/%ACCESS_CONNECTOR_NAME%"
+call databricks storage-credentials create --name %DATABRICKS_STORAGE_CREDENTIAL_NAME% --az-mi-access-connector-id "/subscriptions/%SUBSCRIPTION_ID%/resourceGroups/%RESOURCE_GROUP%/providers/Microsoft.Databricks/accessConnectors/%ACCESS_CONNECTOR_NAME%"
 
 :: Create Databricks Raw Layer External Location
-call databricks unity-catalog external-locations create --name %RAW_LAYER_EXTERNAL_LOC_NAME% --url abfss://%RAW_STORAGE_ACCOUNT_CONTAINER%@%RAW_LAYER_STORAGE_ACCOUNT%.dfs.core.windows.net/ --storage-credential-name %DATABRICKS_STORAGE_CREDENTIAL_NAME%
+call databricks external-locations create --name %RAW_LAYER_EXTERNAL_LOC_NAME% --url abfss://%RAW_STORAGE_ACCOUNT_CONTAINER%@%RAW_LAYER_STORAGE_ACCOUNT%.dfs.core.windows.net/ --storage-credential-name %DATABRICKS_STORAGE_CREDENTIAL_NAME%
 
 :: Create Databricks Bronze Layer External Location
-call databricks unity-catalog external-locations create --name %BRONZE_LAYER_EXTERNAL_LOC_NAME% --url abfss://%BRONZE_STORAGE_ACCOUNT_CONTAINER%@%BRONZE_LAYER_STORAGE_ACCOUNT%.dfs.core.windows.net/ --storage-credential-name %DATABRICKS_STORAGE_CREDENTIAL_NAME%
+call databricks external-locations create --name %BRONZE_LAYER_EXTERNAL_LOC_NAME% --url abfss://%BRONZE_STORAGE_ACCOUNT_CONTAINER%@%BRONZE_LAYER_STORAGE_ACCOUNT%.dfs.core.windows.net/ --storage-credential-name %DATABRICKS_STORAGE_CREDENTIAL_NAME%
 
 :: Create Databricks Silver Layer External Location
 call databricks unity-catalog external-locations create --name %SILVER_LAYER_EXTERNAL_LOC_NAME% --url abfss://%SILVER_STORAGE_ACCOUNT_CONTAINER%@%SILVER_LAYER_STORAGE_ACCOUNT%.dfs.core.windows.net/ --storage-credential-name %DATABRICKS_STORAGE_CREDENTIAL_NAME%
 
-:: Create Databricks Raw Layer External Location
+:: Create Databricks Gold Layer External Location
 call databricks unity-catalog external-locations create --name %GOLD_LAYER_EXTERNAL_LOC_NAME% --url abfss://%GOLD_STORAGE_ACCOUNT_CONTAINER%@%GOLD_LAYER_STORAGE_ACCOUNT%.dfs.core.windows.net/ --storage-credential-name %DATABRICKS_STORAGE_CREDENTIAL_NAME%
 
-
+call databricks unity-catalog schems
 endlocal
 
 
