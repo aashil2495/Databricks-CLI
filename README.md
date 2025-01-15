@@ -25,26 +25,30 @@ The setup includes:
 ## Prerequisites
 - Azure Account.
 - Azure CLI installed.
-- Databricks CLI installed.
+- Databricks CLI installed. I have used version 0.18 at the time of development.
 - AzCopy installed.
 - Sufficient permissions in your Azure account to create resources.
 
 ---
 ## Files and Folders
-- script folder contains the bat files that will deploy the resources.
+- Script folder contains the bat files that will deploy the resources.
 - Notebooks contain the SQL code located under notebooks folder.
 - Job and Cluster Configuration are located under config folder.
-- Source Data Files are located under the data files folder to test the Databricks Job.
+- Source Data Files are located under the data folder to test the Databricks Job.
    
 ## Steps
 
-### 1. **Login to Azure Portal**
-```bash
-az login
-```
-
+### 1. **Edit the "Azure and Databricks CLI" file**
+- **Open the "Azure and Databricks CLI" file in any text editor and update the parameters as per your values.**
+- **Make sure to update the following variables and save the file.**
+   - LOCAL_CREATE_TABLES_PATH
+   - LOCAL_LOAD_BRONZE_PATH
+   - LOCAL_LOAD_SILVER_PATH
+   - LOCAL_LOAD_GOLD_PATH
+ 
 ### 2. **Run the Databricks Deployment script**
-Run the Azure and Databricks CLI file located in scripts folder.
+- **Run the "Azure and Databricks CLI" file located in scripts folder from cmd.**
+- Run the "Azure and Databricks CLI" file located in scripts folder from cmd.**
 
 ### 3. **Create a Databricks PAT Token**
 1. When you are prompted to enter Databricks Host, log in to Your Databricks Workspace in the browser.
