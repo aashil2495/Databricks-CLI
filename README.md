@@ -48,7 +48,6 @@ The setup includes:
  
 ### 2. **Run the Databricks Deployment script**
 - **Run the "Azure and Databricks CLI" file located in scripts folder from cmd.**
-- Run the "Azure and Databricks CLI" file located in scripts folder from cmd.**
 
 ### 3. **Create a Databricks PAT Token**
 1. When you are prompted to enter Databricks Host, log in to Your Databricks Workspace in the browser.
@@ -72,11 +71,18 @@ A new token will be displayed.
 Important: Copy the token immediately. You will not be able to view it again after this step.
 
 ### 4. **Configure the PAT Token**
-Paste your Databricks Host and you will be prompted to enter the token. Paste the token that you copied.
+Paste your Databricks Host and you will be prompted to enter the token. Paste the token that you copied. Once the script runs you will get to see all the infrasture setup except the Databricks Job.
 
-### 5. **Run the Azcopy script**
-Replace `metastore-container` with your desired name.
+### 5. **Edit the Azcopy script**
+1. Update the parameters in "Upload files to Azure and Run Databricks Job" file. It is located in the scripts folder.
+2. The DESTINATION_FILE_NAME should be set to one of the files from the data folder.For example-green_tripdata_2024-02.parquet
+3. The LOCAL_JOB_CONFIG_PATH should be set to the path where your Databricks_Job_Config.json is placed. Databricks_Job_Config.json can be found in config folder.
+4. Save the file.
 
+### 6. **Run the Azcopy script**
+1. Run the "Upload files to Azure and Run Databricks Job" file from cmd.
+2. It will prompt for login, open the link mentioned on the screen in the browser and enter the code given on the cmd on the login page.
+   
 ### 6. **Create a Storage Account**
 ```bash
 az storage account create --name ashilstoragedatastore --resource-group ashil-resourcegroup --location southcentralus --sku Standard_LRS --kind StorageV2 --hns true
