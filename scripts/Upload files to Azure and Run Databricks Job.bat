@@ -17,29 +17,7 @@ call azcopy copy "%LOCAL_PATH_TO_FILE%" "https://%DESTINATION_STORAGE_ACCOUNT_NA
 
 
 ::Create Databricks Job
-call databricks jobs create --json-file %LOCAL_JOB_CONFIG_PATH% > output.json
-
-:: Initialize JOB_ID variable
-set "JOB_ID="
-
-:: Read the JSON file and extract the job_id
-for /f "tokens=2 delims=:, " %%A in ('findstr "job_id" output.json') do (
-    set "JOB_ID=%%~A"
-    set "JOB_ID=!JOB_ID:~1,-1!" :: Trim any quotes if present
-)
-
-:: Clean up temporary file
-del output.json
-
-:: Display the extracted job_id
-if defined JOB_ID (
-    echo Job ID: %JOB_ID%
-) else (
-    echo Failed to extract job ID.
-)
-
-call databricks jobs run-now --job-id %JOB_ID% --notebook-params {"container_bronze":"container-bronze","container_gold":"container-gold","container_raw":"container-raw","container_silver":"container-silver","storage":"ashilstorage"}
-
+call databricks jobs create --json-file %LOCAL_JOB_CONFIG_PATH%
 
 
 
