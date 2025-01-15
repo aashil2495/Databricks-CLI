@@ -38,8 +38,8 @@ The setup includes:
    
 ## Steps
 
-### 1. **Edit the "Azure and Databricks CLI" file**
-- **Open the "Azure and Databricks CLI" file in any text editor and update the parameters as per your values.**
+### 1. **Edit the "Azure and Databricks CLI" file** 
+- **Open the "Azure and Databricks CLI" file in the "scripts" folder in any text editor and update the parameters as per your values.**
 - **Make sure to update the following variables and save the file.**
    - LOCAL_CREATE_TABLES_PATH
    - LOCAL_LOAD_BRONZE_PATH
