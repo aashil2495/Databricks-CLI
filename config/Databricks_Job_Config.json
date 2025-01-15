@@ -1,5 +1,5 @@
 {
-  "name": "Load Medallion Pipeline",
+  "name": "Medallion",
   "email_notifications": {
     "no_alert_for_skipped_runs": false
   },
@@ -27,7 +27,7 @@
       ],
       "run_if": "ALL_SUCCESS",
       "notebook_task": {
-        "notebook_path": "/Workspace/Users/ashil@itmiracle.com/Load Bronze",
+        "notebook_path": "/Workspace/Users/ashil@itmiracle.com/Load Bronze Layer",
         "source": "WORKSPACE"
       },
       "timeout_seconds": 0,
@@ -43,7 +43,7 @@
       ],
       "run_if": "ALL_SUCCESS",
       "notebook_task": {
-        "notebook_path": "/Workspace/Users/ashil@itmiracle.com/Load Silver",
+        "notebook_path": "/Workspace/Users/ashil@itmiracle.com/Load Silver Layer",
         "source": "WORKSPACE"
       },
       "timeout_seconds": 0,
@@ -59,7 +59,7 @@
       ],
       "run_if": "ALL_SUCCESS",
       "notebook_task": {
-        "notebook_path": "/Workspace/Users/ashil@itmiracle.com/Load Gold",
+        "notebook_path": "/Workspace/Users/ashil@itmiracle.com/Load Gold Layer",
         "source": "WORKSPACE"
       },
       "timeout_seconds": 0,
@@ -69,6 +69,28 @@
   "queue": {
     "enabled": true
   },
+  "parameters": [
+    {
+      "name": "container_bronze",
+      "default": "container-bronze"
+    },
+    {
+      "name": "container_gold",
+      "default": "container-gold"
+    },
+    {
+      "name": "container_silver",
+      "default": "container-silver"
+    },
+    {
+      "name": "storage",
+      "default": "ashilstorage"
+    },
+    {
+      "name": "container_raw",
+      "default": "container-raw"
+    }
+  ],
   "run_as": {
     "user_name": "ashil@itmiracle.com"
   }
