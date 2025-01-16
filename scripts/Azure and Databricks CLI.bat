@@ -197,10 +197,10 @@ call databricks unity-catalog schemas create --catalog-name main --name silver
 call databricks unity-catalog schemas create --catalog-name main --name gold
 
 ::Import Notebooks from local to databricks workspace
-call databricks workspace import %LOCAL_CREATE_TABLES_PATH% %DATABRICKS_NOTEBOOK_PATH%/%DATABRICKS_NOTEBOOK_CREATE_TABLES%" -l PYTHON -f dbc
-call databricks workspace import %LOCAL_LOAD_BRONZE_PATH% %DATABRICKS_NOTEBOOK_PATH%/%DATABRICKS_NOTEBOOK_BRONZE%" -l PYTHON -f dbc
-call databricks workspace import %LOCAL_LOAD_SILVER_PATH% %DATABRICKS_NOTEBOOK_PATH%/%DATABRICKS_NOTEBOOK_SILVER%" -l PYTHON -f dbc
-call databricks workspace import %LOCAL_LOAD_GOLD_PATH% %DATABRICKS_NOTEBOOK_PATH%/%DATABRICKS_NOTEBOOK_GOLD%" -l PYTHON -f dbc
+call databricks workspace import %LOCAL_CREATE_TABLES_PATH% "%DATABRICKS_NOTEBOOK_PATH%/%DATABRICKS_NOTEBOOK_CREATE_TABLES%" -l PYTHON -f dbc
+call databricks workspace import %LOCAL_LOAD_BRONZE_PATH% "%DATABRICKS_NOTEBOOK_PATH%/%DATABRICKS_NOTEBOOK_BRONZE%" -l PYTHON -f dbc
+call databricks workspace import %LOCAL_LOAD_SILVER_PATH% "%DATABRICKS_NOTEBOOK_PATH%/%DATABRICKS_NOTEBOOK_SILVER%" -l PYTHON -f dbc
+call databricks workspace import %LOCAL_LOAD_GOLD_PATH% "%DATABRICKS_NOTEBOOK_PATH%/%DATABRICKS_NOTEBOOK_GOLD%" -l PYTHON -f dbc
 
 endlocal
 
