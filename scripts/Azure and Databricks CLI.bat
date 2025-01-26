@@ -1,13 +1,13 @@
 @echo off
 setlocal enabledelayedexpansion
 :: Set variables
-set RESOURCE_GROUP=ashil-resourcegroup
+set RESOURCE_GROUP=itm-resourcegroup
 set LOCATION=southcentralus
-set DATABRICKS_WORKSPACE_NAME=ashildatabricksworkspace
+set DATABRICKS_WORKSPACE_NAME=itmdatabricksworkspace
 set DATABRICKS_WORKSPACE_SKU=premium
-set METASTORE_STORAGE_ACCOUNT=ashilmetastorestorage
+set METASTORE_STORAGE_ACCOUNT=itmmetastorestorage
 set METASTORE_CONTAINER=container-metastore
-set DATA_STORAGE_ACCOUNT=ashilstorage
+set DATA_STORAGE_ACCOUNT=itmstorage
 set RAW_CONTAINER=container-raw
 set BRONZE_CONTAINER=container-bronze
 set SILVER_CONTAINER=container-silver
@@ -16,14 +16,14 @@ set RAW_LAYER_EXTERNAL_LOC_NAME=raw-ext-loc
 set BRONZE_LAYER_EXTERNAL_LOC_NAME=bronze-ext-loc
 set SILVER_LAYER_EXTERNAL_LOC_NAME=silver-ext-loc
 set GOLD_LAYER_EXTERNAL_LOC_NAME=gold-ext-loc
-set ACCESS_CONNECTOR_NAME=ashil-access-connector
+set ACCESS_CONNECTOR_NAME=itm-access-connector
 set METASTORE_NAME=southcentralus
 set DATABRICKS_STORAGE_CREDENTIAL_NAME=common-storage-cred
 set LOCAL_CREATE_TABLES_PATH=C:\Users\aashi\projects\Databricks CLI\notebooks\Create tables.dbc"
 set LOCAL_LOAD_BRONZE_PATH="C:\Users\aashi\projects\Databricks CLI\notebooks\Load Bronze Layer.dbc"
 set LOCAL_LOAD_SILVER_PATH="C:\Users\aashi\projects\Databricks CLI\notebooks\Load Silver Layer.dbc"
 set LOCAL_LOAD_GOLD_PATH="C:\Users\aashi\projects\Databricks CLI\notebooks\Load Gold Layer.dbc"
-set DATABRICKS_NOTEBOOK_PATH=/Users/ashil@itmiracle.com
+set DATABRICKS_NOTEBOOK_PATH=/Users/yourname@itmiracle.com
 set DATABRICKS_NOTEBOOK_CREATE_TABLES=Create tables
 set DATABRICKS_NOTEBOOK_BRONZE=Load Bronze Layer
 set DATABRICKS_NOTEBOOK_SILVER=Load Silver Layer
